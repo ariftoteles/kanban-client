@@ -4,11 +4,18 @@ const app = new Vue({
         baseUrl: 'http://localhost:3000',
         page: 'register',
         account: '',
+        addBacklog: false,
+        addTodo: false,
+        addDoing: false,
+        addDone: false,
+        title: '',
+        category: '',
         user: {
             username: '',
             email: '',
             password: ''
-        }
+        },
+        tasks: []
     },
     methods: {
         changePage (page){
@@ -17,6 +24,7 @@ const app = new Vue({
 
         checkAuth(){
             if(localStorage.getItem('access_token')){
+                this.getAllTask()
                 this.changePage('main-page')
             } else {
                 this.changePage('login')
@@ -67,10 +75,70 @@ const app = new Vue({
         handleLogout(){
             localStorage.clear()
             this.checkAuth()
+        },
+
+        getAllTask(){
+            console.log('get all task');
+            axios({
+                method: 'GET',
+                url: `${this.baseUrl}/kanban`,
+                headers: {
+                    access_token: localStorage.getItem('access_token')
+                }
+            }).then( res => {
+                this.tasks = res.data
+                console.log(this.tasks);
+            }).catch( err => {
+                console.log(err);
+            })
+        },
+
+        addTask(){
+            console.log(this.category);
+            console.log(this.title);
+            axios({
+                method: 'POST',
+                url: `${this.baseUrl}/kanban`,
+                headers: {
+                    access_token: localStorage.getItem('access_token')
+                },
+                data: {
+                    title: this.title,
+                    category: this.category
+                }
+            }).then(res => {
+                console.log(res);
+                this.addBacklog = false
+                this.addTodo = false
+                this.addDoing = false
+                this.addDone = false
+                this.title = ''
+                this.checkAuth()
+            }).catch(err => {
+                console.log(err);
+            })
         }
     },
 
     created () {
         this.checkAuth()
+    },
+
+    computed: {
+        backlogFilter(){
+            return this.tasks.filter( task => task.category === 'backlog')
+        },
+
+        todoFilter(){
+            return this.tasks.filter( task => task.category === 'todo')
+        },
+
+        doingFilter(){
+            return this.tasks.filter( task => task.category === 'doing')
+        },
+
+        doneFilter(){
+            return this.tasks.filter( task => task.category === 'done')
+        }
     }
 })
