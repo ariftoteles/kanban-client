@@ -5,10 +5,10 @@
           <!-- List Category -->
           <Category v-for="item in categories" 
             :key="item.id"
+            :account="account"
             :categories="categories"
             :category="item"
             :allTasks="allTasks"
-            :task="task"
             @addTask="addTask"
             @deleteTask="deleteTask"
             @handleEditTask="handleEditTask"
@@ -26,10 +26,10 @@ export default {
   components: {
     Category
   },
-  props: ['categories','allTasks', 'task'],
+  props: ['categories','allTasks','account'],
   methods: {
-    addTask() {
-      this.$emit('addTask', this.task)
+    addTask(value) {
+      this.$emit('addTask', value)
     },
     deleteTask(id){
       this.$emit('deleteTask', id)
@@ -46,6 +46,23 @@ export default {
 
 <style>
 .w-95 {
-  width: 95%;
+  width: 97%;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    opacity: 100;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(243, 234, 234);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(197, 186, 186);
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="container-fluid d-flex justify-content-between w-75 mx-auto mt-5" style="height: 35rem;">
+    <div class="container-fluid d-flex justify-content-between w-75 mx-auto mt-5 h-35">
       <div class="w-100 p-3 text-center">
         <h3>Structured work with the kanban</h3>
         <p>Highly effective teams get work done with kanban</p>
-        <img src="../assets/images/bg.svg" alt="" style="width: 30rem;height: 20rem;">
+        <img class="img" src="../assets/images/bg.svg" alt="">
       </div>
       <div class="w-75">
         <div class="shadow rounded">
@@ -28,10 +28,14 @@
               </div>
               <button type="submit" class="btn btn-primary w-100">Register</button>
             </form>
-            <div class="d-flex justify-content-start">
-              <span class="mx-2 align-bottom">Login from Google: </span>
-              <div class="g-signin2" data-onsuccess="onSignIn"></div>
-            </div>
+            <button class="btn btn-success w-100">
+              <g-signin-button
+                :params="googleSignInParams"
+                @success="onSignInSuccess"
+                @error="onSignInError">
+                Sign in with Google
+              </g-signin-button>
+            </button>
           </div>
         </div>
       </div>
@@ -43,14 +47,36 @@
   export default {
     name: "FormRegister",
     props: ['changePage','user'],
+    data() {
+      return {
+        googleSignInParams: {
+        client_id: '1085055301058-vunuuk5052jfr4e7tlkhjk5it7hctcgf.apps.googleusercontent.com'
+      }
+      }
+    },
     methods: {
       handleRegister(){
         this.$emit('handleRegister', this.user)
+      },
+
+      onSignInSuccess (googleUser) {
+        const id_token = googleUser.getAuthResponse().id_token
+        this.$emit('googleLogin', id_token)
+      },
+
+      onSignInError (error) {
+        console.log('OH NOES', error)
       }
     }
   }
 </script>
 
 <style>
-
+.h-35 {
+  height: 35rem;
+}
+.img {
+  height: 20rem;
+  width: 30rem;
+}
 </style>
