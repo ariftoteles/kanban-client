@@ -214,46 +214,35 @@ const app = new Vue({
       })
     }
 
-    // handlePatchTask(id, category){
-    //   axios({
-    //     method: 'PATCH',
-    //     url: `${this.baseUrl}/kanban/${id}`,
-    //     headers: {
-    //       access_token: localStorage.getItem('access_token')
-    //     },
-    //     data: {
-    //       category
-    //     }
-    //   }).then(res => {
-    //     console.log(res.data);
-    //     this.checkAuth()
-    //   }).catch(err => {
-    //     console.log(err);
-    //     this.checkAuth()
-    //   })
-    // }
+  },
+
+  beforeCreate(){
+    console.log('before cr');
   },
 
   created() {
+    console.log('created');
     this.checkAuth()
   },
 
-  // still not work
-  // mounted(){
-  //   $('fieldset').each(function () {
-  //     $(this).sortable({
-  //       connectWith: 'fieldset',
-  //       cursor: 'pointer',
-  //       revert: true,
-  //       remove: function (event, ui) {
-  //         event.preventDefault()
-  //         let id = ui.item.children().attr('id')
-  //         let category = ui.item.parent().attr('id')
-  //         this.handlePatchTask(id, category)
-  //       }
-  //     })
-  //   })
-  // },
+  // still not work 
+  mounted: function(){
+    console.log('mounted');
+    let vm = this
+    $('fieldset').each(function () {
+      $(this).sortable({
+        connectWith: 'fieldset',
+        cursor: 'pointer',
+        revert: true,
+        remove: function (event, ui) {
+          event.preventDefault()
+          let id = ui.item.children().attr('id')
+          let category = ui.item.parent().attr('id')
+          vm.handlePatch(id,category)
+        }
+      })
+    })
+  },
 
   computed: {
 

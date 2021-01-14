@@ -1,1 +1,4 @@
 .vscode
+client/.cache
+client/node_modules
+client/dist
