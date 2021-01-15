@@ -2,20 +2,19 @@
   <div class="category pb-3 bg-light rounded shadow-sm overflow-hidden">
     <div class="p-3 px-3 d-flex justify-content-between bg-secondary shadow-sm">
         <span v-if="!isEdit" class="fs-6 fw-bold text-white">{{ category.name }}</span>
-        <input v-if="isEdit" class="form-control form-costum" type="text" v-model="category.name">
+        <input v-if="isEdit" v-model="category.name" class="form-control form-costum" type="text" >
         <div v-if="isEdit" class="">
           <button @click="handleEditCategory" type="submit" class="btn btn-success btn-sm">oke</button>
           <button @click="isEdit = false" class="btn btn-danger btn-sm">cancel</button>
         </div>
         <div>
-          <svg @click="isActive = !isActive" class="mx-2 text-light" type="button" style="width:1.25rem;height:1.25rem;"
+          <svg @click="isActive = !isActive" class="mx-2 text-light icon-menu" type="button"
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
           </svg>
           <div v-if="isActive" class="position-relative">
-            <div class="position-absolute shadow-sm rounded bg-white"
-              style="left: -2rem; top: 0rem; font-size: .7rem;">
+            <div class="position-absolute shadow-sm rounded bg-white drop-down">
               <a class="dropdown-item rounded" type="button" @click.prevent="editCategory">Edit</a>
               <a class="dropdown-item rounded" type="button" @click.prevent="deleteCategory">Delete</a>
             </div>
@@ -118,5 +117,15 @@
 .form-costum {
   max-width: 6rem;
   max-height: 2rem;
+  font-size: 1rem;
+}
+.drop-down{
+  left: -2rem; 
+  top: 0rem; 
+  font-size: .8rem;
+}
+.icon-menu {
+  width:1.25rem;
+  height:1.25rem;
 }
 </style>

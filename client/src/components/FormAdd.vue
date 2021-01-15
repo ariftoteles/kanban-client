@@ -1,10 +1,11 @@
 <template>
   <div class="mx-3 mt-3">
-    <form action="" @submit.prevent="addTask">
+    <form @submit.prevent="addTask">
       <textarea 
-        v-model="title" @click="add = true" 
-        class="form-control add-form"
+        v-model="title" 
+        @click="add = true" 
         :rows="add ? 2 : 1"
+        class="form-control add-form"
         placeholder="Add task . . .">
       </textarea>
       <div v-if="add" class="my-2">
