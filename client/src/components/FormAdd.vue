@@ -5,7 +5,8 @@
         v-model="title" @click="add = true" 
         class="form-control add-form"
         :rows="add ? 2 : 1"
-        placeholder="Add task . . ."></textarea>
+        placeholder="Add task . . .">
+      </textarea>
       <div v-if="add" class="my-2">
         <button type="submit" class="btn btn-success btn-sm">add task</button>
         <button @click="cancel" class="btn btn-secondary btn-sm">cancel</button>

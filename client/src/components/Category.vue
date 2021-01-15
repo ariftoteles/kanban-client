@@ -1,9 +1,7 @@
 <template>
   <div class="category pb-3 bg-light rounded shadow-sm overflow-hidden">
-    <div class="d-flex justify-content-between p-3 px-3 bg-secondary shadow-sm">
-      <div class="d-flex justify-content-between">
-        <span class="align-middle fs-6 fw-bold text-white">{{ category }}</span>
-      </div>
+    <div class="p-3 px-3 bg-secondary shadow-sm">
+        <span class=" fs-6 fw-bold text-white">{{ category }}</span>
     </div>
     <div class="fieldset">
       <fieldset :id="category" class="h-2 mt-3 px-2 rounded">

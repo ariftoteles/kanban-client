@@ -53,7 +53,11 @@
         account: '',
         categories: ['Backlog', 'Todo', 'Doing', 'Done'],
         allTasks: [],
-        user: {}
+        user: {
+          username: '',
+          email: '',
+          password: ''
+        }
       }
     },
     methods: {
@@ -86,7 +90,13 @@
           this.user = {}
           this.changePage('login')
         }).catch(err => {
-          console.log(err);
+          // console.log(err.response.data.message[0])
+          this.$fire({
+            title: "Something Error",
+            text: err.response.data.message[0],
+            type: "error",
+            timer: 3000
+          })
         })
       },
 
@@ -105,6 +115,12 @@
           this.checkAuth()
         }).catch(err => {
           console.log(err);
+          this.$fire({
+            title: "Something Error",
+            text: err.response.data.message,
+            type: "error",
+            timer: 3000
+          })
         })
       },
 
@@ -122,6 +138,12 @@
           this.checkAuth()
         }).catch(err => {
           console.log(err);
+          this.$fire({
+            title: "Something Error",
+            text: err.response.data.message,
+            type: "error",
+            timer: 3000
+          })
         })
       },
 
@@ -145,6 +167,12 @@
           this.checkAuth()
         }).catch(err => {
           console.log(err);
+          this.$fire({
+            title: "Something Error",
+            text: err.response.data.message,
+            type: "error",
+            timer: 3000
+          })
         })
       },
 
@@ -164,6 +192,24 @@
 
       deleteTask(id) {
         console.log(id);
+        this.$fire({
+          title: "Are you sure?",
+          type: "warning",
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: `OK`,
+          cancelButtonText: `Cancel`, 
+        }).then(result => {
+          console.log(result);
+          if (result.value) {
+            this.handleDelete(id)
+          } else (
+            this.checkAuth()
+          ) 
+        });
+      },
+
+      handleDelete(id){
         axios({
           method: 'DELETE',
           url: `${this.baseUrl}/kanban/${id}`,
@@ -174,6 +220,12 @@
           this.checkAuth()
         }).catch(err => {
           console.log(err);
+          this.$fire({
+            title: "Something Error",
+            text: err.response.data.message,
+            type: "error",
+            timer: 3000
+          })
         })
       },
 
@@ -193,6 +245,12 @@
           this.checkAuth()
         }).catch(err => {
           console.log(err);
+          this.$fire({
+            title: "Something Error",
+            text: err.response.data.message,
+            type: "error",
+            timer: 3000
+          })
           this.checkAuth()
         })
       },
@@ -211,6 +269,12 @@
           this.checkAuth()
         }).catch(err => {
           console.log(err);
+          this.$fire({
+            title: "Something Error",
+            text: err.response.data.message,
+            type: "error",
+            timer: 3000
+          })
           this.checkAuth()
         })
       }

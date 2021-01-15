@@ -1,8 +1,8 @@
 <template>
-  <div class="bg-white shadow-sm rounded overflow-hidden mb-2 w-17"
-      v-if="item.category == category">
-    <div :class="checkColor" :id="item.id">
-      <div :id="item.id" class="d-flex justify-content-start">
+<div v-if="item.category == category" class="task rounded" >
+  <div :id="item.id" class="bg-white shadow-sm rounded overflow-hidden mb-2 w-17">
+    <div :class="checkColor">
+      <div class="d-flex justify-content-start">
         <div class="bg-secondary" style="padding-left: .25rem;"></div>
         <div class="p-3 w-100">
           <p v-if="!isEdit" class="overflow-hidden fs-9">{{ item.title }}</p>
@@ -49,6 +49,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -101,9 +102,6 @@
 .bg-active {
   background-color: #fff8cd;
 }
-.bg-active2 {
-  background-color: #ff9642;
-}
 .icon-svg {
   width: 1rem; 
   height: 1rem;
@@ -116,5 +114,9 @@
 }
 .w-17 {
   width: 17rem;
+}
+.task:hover {
+  cursor: pointer;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 5px 0 rgba(0, 0, 0, 0.19);
 }
 </style>
