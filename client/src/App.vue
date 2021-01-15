@@ -216,7 +216,7 @@
       handleEditCategory(value){
         console.log(value);
         axios({
-          method: 'PUT',
+          method: 'PATCH',
           url: `${this.baseUrl}/categories/${value.id}`,
           headers: {
             access_token: localStorage.getItem('access_token')
