@@ -29,7 +29,7 @@ export default {
     addTask(){
       let value = {
         title: this.title,
-        category: this.category
+        categoryId: this.category.id
       }
       this.$emit('addTask', value)
       this.add = false

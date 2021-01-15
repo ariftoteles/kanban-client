@@ -1,16 +1,16 @@
 <template>
-<div v-if="item.category == category" class="task rounded" >
-  <div :id="item.id" class="bg-white shadow-sm rounded overflow-hidden mb-2 w-17">
+<div v-if="item.CategoryId == category.id" class="rounded" >
+  <div :id="item.id" class="task bg-white shadow-sm rounded mb-2 w-17">
     <div :class="checkColor">
       <div class="d-flex justify-content-start">
-        <div class="bg-secondary" style="padding-left: .25rem;"></div>
+        <div class="bg-secondary left-border" style="padding-left: .25rem;"></div>
         <div class="p-3 w-100">
           <p v-if="!isEdit" class="overflow-hidden fs-9">{{ item.title }}</p>
           <div v-if="isEdit">
             <form action="" @submit.prevent="handleEditTask">
               <textarea type="text" class="form-control mb-2 fs-9" v-model="item.title"></textarea>
               <div class="my-2">
-                <button @click="item.category = category" type="submit" class="btn btn-success btn-sm">edit task</button>
+                <button @click="item.CategoryId = category.id" type="submit" class="btn btn-success btn-sm">edit task</button>
                 <button @click="isEdit = false" class="btn btn-secondary btn-sm">cancel</button>
               </div>
             </form>
@@ -28,9 +28,9 @@
               </svg>
               <div v-if="isPatch" class="position-relative">
                 <div class="position-absolute shadow-sm rounded bg-white"
-                  style="left: 0rem; bottom: 0rem; font-size: .7rem;">
+                  style="left: 0rem; top: 0rem; font-size: .7rem;">
                   <a v-for="(cat, idx) in filterCategories" :key="idx"
-                    class="dropdown-item" type="button" @click="handlePatch(cat)">{{ cat }}</a>
+                    class="dropdown-item" type="button" @click="handlePatch(cat.id)">{{ cat.name }}</a>
                 </div>
               </div>
               <svg class="icon-svg mx-2" type="button" @click="isEdit = !isEdit"
@@ -70,16 +70,17 @@
         let value = {
           id: this.item.id,
           title: this.item.title,
-          category: this.item.category
+          categoryId: this.item.CategoryId
         }
         this.$emit('handleEditTask', value)
         this.isEdit = false
       },
-      handlePatch(cat){
+      handlePatch(catId){
         let value = {
           id: this.item.id,
-          category: cat
+          categoryId: catId
         }
+        console.log(value);
         this.$emit('handlePatch', value)
         this.isPatch = false
       }
@@ -88,11 +89,19 @@
     computed: {
       checkColor(){
         if (this.item.User.username == this.account){
-          return {'bg-active': true}
+          return {'bg-active': true,
+                  'rounded': true}
         }
       },
       filterCategories(){
-        return this.categories.filter( cat => cat != this.category)
+        // return this.categories.filter( cat => cat.id != this.category)
+        let result = []
+        this.categories.forEach( el => {
+          if (el.id != this.item.CategoryId){
+            result.push(el)
+          }
+        })
+        return result
       }
     }
   }
@@ -118,5 +127,9 @@
 .task:hover {
   cursor: pointer;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 5px 0 rgba(0, 0, 0, 0.19);
+}
+.left-border {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 </style>

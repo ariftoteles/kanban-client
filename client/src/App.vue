@@ -25,10 +25,13 @@
       :account="account"
       :categories="categories"
       :allTasks="allTasks"
+      @addCategory="addCategory"
       @addTask="addTask"
       @deleteTask="deleteTask"
       @handleEditTask="handleEditTask"
-      @handlePatch="handlePatch">
+      @handlePatch="handlePatch"
+      @deleteCategory="deleteCategory"
+      @handleEditCategory="handleEditCategory">
     </MainPage>
   </div>
 </template>
@@ -51,7 +54,8 @@
         baseUrl: 'http://localhost:3000',
         page: 'register',
         account: '',
-        categories: ['Backlog', 'Todo', 'Doing', 'Done'],
+        // categories: ['Backlog', 'Todo', 'Doing', 'Done','Test'],
+        categories: [],
         allTasks: [],
         user: {
           username: '',
@@ -70,6 +74,7 @@
           if (localStorage.getItem('username')) {
             this.account = localStorage.getItem('username')
           }
+          this.getCategories()
           this.getAllTask()
           this.changePage('main-page')
         } else {
@@ -152,7 +157,109 @@
         this.checkAuth()
       },
 
+      getCategories(){
+        axios({
+          method: 'GET',
+          url: `${this.baseUrl}/categories`,
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          }
+        }).then(res => {
+          this.categories = res.data
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+
+      addCategory(value){
+        console.log(value);
+        axios({
+          method: 'POST',
+          url: `${this.baseUrl}/categories`,
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          },
+          data: {
+            name: value
+          }
+        }).then(res => {
+          this.checkAuth()
+        }).catch(err => {
+          console.log(err);
+          this.$fire({
+            title: "Something Error",
+            text: err.response.data.message,
+            type: "error",
+            timer: 3000
+          })
+        })
+      },
+      
+      deleteCategory(id){
+        this.$fire({
+          title: "Are you sure?",
+          type: "warning",
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: `OK`,
+          cancelButtonText: `Cancel`, 
+        }).then(result => {
+          console.log(result);
+          if (result.value) {
+            this.handleDeleteCategory(id)
+          } else (
+            this.checkAuth()
+          ) 
+        });
+      },
+
+      handleEditCategory(value){
+        console.log(value);
+        axios({
+          method: 'PUT',
+          url: `${this.baseUrl}/categories/${value.id}`,
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          },
+          data: {
+            name: value.name
+          }
+        }).then(res => {
+          this.checkAuth()
+        }).catch(err => {
+          console.log(err);
+          this.$fire({
+            title: "Something Error",
+            text: err.response.data.message,
+            type: "error",
+            timer: 3000
+          })
+          this.checkAuth()
+        })
+      },
+
+      handleDeleteCategory(id){
+        axios({
+          method: 'DELETE',
+          url: `${this.baseUrl}/categories/${id}`,
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          }
+        }).then(res => {
+          this.checkAuth()
+        }).catch(err => {
+          console.log(err);
+          this.$fire({
+            title: "Something Error",
+            text: err.response.data.message,
+            type: "error",
+            timer: 3000
+          })
+        })
+      },
+
       addTask(value) {
+        console.log(value);
         axios({
           method: 'POST',
           url: `${this.baseUrl}/kanban`,
@@ -161,7 +268,7 @@
           },
           data: {
             title: value.title,
-            category: value.category
+            categoryId: value.categoryId
           }
         }).then(res => {
           this.checkAuth()
@@ -239,7 +346,7 @@
           },
           data: {
             title: value.title,
-            category: value.category
+            categoryId: value.categoryId
           }
         }).then(res => {
           this.checkAuth()
@@ -256,6 +363,7 @@
       },
 
       handlePatch(value) {
+        console.log(value);
         axios({
           method: 'PATCH',
           url: `${this.baseUrl}/kanban/${value.id}`,
@@ -263,7 +371,7 @@
             access_token: localStorage.getItem('access_token')
           },
           data: {
-            category: value.category
+            categoryId: value.categoryId
           }
         }).then(res => {
           this.checkAuth()
@@ -295,12 +403,20 @@
           remove: function (event, ui) {
             event.preventDefault()
             let id = ui.item.children().attr('id')
-            let category = ui.item.parent().attr('id')
-            let value = {id, category}
+            let categoryId = ui.item.parent().attr('id')
+            let value = {id, categoryId}
+            console.log(value);
             vm.handlePatch(value)
           }
         })
       })
+
+      $('#search-task').on("keyup", function () {
+        const value = $(this).val().toLowerCase();
+        $(".task").filter(function () {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
     }
 
   }
