@@ -46,7 +46,7 @@
     data() {
       return {
         googleSignInParams: {
-        client_id: '1085055301058-vunuuk5052jfr4e7tlkhjk5it7hctcgf.apps.googleusercontent.com'
+        client_id: '1085055301058-pc12p4jq6rfdmojvi4gaodeeg2kd4gm8.apps.googleusercontent.com'
       }
       }
     },

@@ -51,10 +51,10 @@
     },
     data() {
       return {
-        baseUrl: 'http://localhost:3000',
+        // baseUrl: 'http://localhost:3000',
+        baseUrl: 'https://awesomw-kanban.herokuapp.com',
         page: 'register',
         account: '',
-        // categories: ['Backlog', 'Todo', 'Doing', 'Done','Test'],
         categories: [],
         allTasks: [],
         user: {
@@ -95,7 +95,6 @@
           this.user = {}
           this.changePage('login')
         }).catch(err => {
-          // console.log(err.response.data.message[0])
           this.$fire({
             title: "Something Error",
             text: err.response.data.message[0],
